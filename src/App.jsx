@@ -1,7 +1,7 @@
 import React from "react";
 import './App.css';
 
-export default function ChronosApp() {
+export default function AnikronosApp() {
   return (
     <>
       <div className="orb orb-1" />
@@ -12,8 +12,8 @@ export default function ChronosApp() {
           <div className="logo-wrap">
             <div className="logo-icon">⏱</div>
             <div>
-              <div className="logo-text">Chronos</div>
-              <div className="logo-sub">URL Shortener · by Chronos</div>
+              <div className="logo-text">Anikronos</div>
+              <div className="logo-sub">URL Shortener · by chronos and anikulapo</div>
             </div>
           </div>
         </nav>
@@ -40,7 +40,7 @@ export default function ChronosApp() {
 
         
         <section className="section">
-          <h2 className="section-title">Why Choose Chronos?</h2>
+          <h2 className="section-title">Why Choose Anikronos?</h2>
           <div className="features-grid">
             {[
               { icon: "⚡", name: "Instant Shortening", desc: "Create compact links in milliseconds with zero friction." },
@@ -83,7 +83,7 @@ export default function ChronosApp() {
 
         
         <footer>
-          <div className="footer-logo">Opeyemi</div>
+          <div className="footer-logo">Anikronos</div>
           <div className="social-links">
             {/* Twitter */}
             <a href="https://twitter.com/" className="social-link" aria-label="Twitter" target="_blank" rel="noreferrer noopener">
@@ -104,7 +104,7 @@ export default function ChronosApp() {
               </svg>
             </a>
           </div>
-          <div className="footer-copy">© 2026 Chronos Ltd. All rights reserved.</div>
+          <div className="footer-copy">© 2026 Anikronos Ltd. All rights reserved.</div>
         </footer>
       </div>
     </>
