@@ -68,19 +68,19 @@ export default function AnikronosApp() {
           <h2 className="section-title">How It Works</h2>
           <div className="steps-deck-wrap">
             <div className="steps-deck">
-              <div className="sdeck-card sdeck-card-1">
+              <div className="sdeck-card sdeck-card-1" tabIndex={0} role="button" aria-label="Step 1: Paste Link">
                 <div className="sdeck-step-num">01</div>
                 <div className="sdeck-emoji">📋</div>
                 <div className="sdeck-name">Paste Link</div>
                 <div className="sdeck-desc">Copy any long URL and paste it into our secure input field. Works with any link — social, ecommerce, docs, you name it.</div>
               </div>
-              <div className="sdeck-card sdeck-card-2">
+              <div className="sdeck-card sdeck-card-2" tabIndex={0} role="button" aria-label="Step 2: Shorten">
                 <div className="sdeck-step-num">02</div>
                 <div className="sdeck-emoji">⚙️</div>
                 <div className="sdeck-name">Shorten</div>
                 <div className="sdeck-desc">Our algorithm instantly generates a concise, memorable alias for your link. Optionally set a custom keyword to make it truly yours.</div>
               </div>
-              <div className="sdeck-card sdeck-card-3">
+              <div className="sdeck-card sdeck-card-3" tabIndex={0} role="button" aria-label="Step 3: Share and Track">
                 <div className="sdeck-step-num">03</div>
                 <div className="sdeck-emoji">🚀</div>
                 <div className="sdeck-name">Share &amp; Track</div>

@@ -42,18 +42,14 @@
 html, body, #root {
   min-height: 100vh;
   background: var(--bg);
-  background-image: url('/images/bg-2.jpg');
- 
+  background-image: url('/images/lightning-bg.jpg');
   background-size: cover;
-  background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
-  
   color: var(--text);
   font-family: var(--font-display);
   overflow-x: hidden;
 }
-
 
 body::before { display: none; }
 .orb { display: none; }
@@ -70,9 +66,9 @@ body::before { display: none; }
 nav {
   width: 100%;
   border-bottom: none;
-  background: linear-gradient(90deg, rgba(7,13,26,0.35) 0%, rgba(7,13,26,0.18) 100%);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: linear-gradient(180deg, rgba(7,13,26,0.4) 0%, rgba(7,13,26,0.15) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -444,6 +440,9 @@ h1 {
   overflow: hidden;
 }
 
+/* No browser focus ring — we style it ourselves */
+.sdeck-card:focus { outline: none; }
+
 /* Glowing top-edge accent line */
 .sdeck-card::before {
   content: '';
@@ -454,34 +453,35 @@ h1 {
   opacity: 0.5;
   transition: opacity 0.4s ease;
 }
-.sdeck-card:hover::before { opacity: 1; }
+.sdeck-card:hover::before,
+.sdeck-card:focus::before { opacity: 1; }
 
 /* ── Individual card positions ── */
 .sdeck-card-1 { left: 60px;  z-index: 3; }
 .sdeck-card-2 { left: 300px; z-index: 2; }
 .sdeck-card-3 { left: 530px; z-index: 1; }
 
-/* ── Sibling push animations (pure CSS, same trick as the reference) ── */
-.sdeck-card-1:hover {
+/* ── Sibling push animations ── */
+.sdeck-card-1:hover,
+.sdeck-card-1:focus {
   border-color: var(--blue);
   box-shadow: -10px 0 20px rgba(0,0,0,0.45), 0 0 30px var(--blue-glow);
 }
-.sdeck-card-1:hover ~ .sdeck-card-2 {
-  transform: translateX(220px);
-}
-.sdeck-card-1:hover ~ .sdeck-card-3 {
-  transform: translateX(200px);
-}
+.sdeck-card-1:hover ~ .sdeck-card-2, 
+.sdeck-card-1:focus ~ .sdeck-card-2 { transform: translateX(225px); }
+.sdeck-card-1:hover ~ .sdeck-card-3,
+.sdeck-card-1:focus ~ .sdeck-card-3 { transform: translateX(200px); }
 
-.sdeck-card-2:hover {
+.sdeck-card-2:hover,
+.sdeck-card-2:focus {
   border-color: var(--blue);
   box-shadow: -10px 0 20px rgba(0,0,0,0.45), 0 0 30px var(--blue-glow);
 }
-.sdeck-card-2:hover ~ .sdeck-card-3 {
-  transform: translateX(240px);
-}
+.sdeck-card-2:hover ~ .sdeck-card-3,
+.sdeck-card-2:focus ~ .sdeck-card-3 { transform: translateX(240px); }
 
-.sdeck-card-3:hover {
+.sdeck-card-3:hover,
+.sdeck-card-3:focus {
   border-color: var(--blue);
   box-shadow: -10px 0 20px rgba(0,0,0,0.45), 0 0 30px var(--blue-glow);
 }
@@ -500,7 +500,8 @@ h1 {
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
-.sdeck-card:hover .sdeck-step-num { opacity: 0.25; }
+.sdeck-card:hover .sdeck-step-num,
+.sdeck-card:focus .sdeck-step-num { opacity: 0.25; }
 
 .sdeck-emoji {
   font-size: 2rem;
@@ -564,10 +565,102 @@ footer {
 }
 
 /* ── RESPONSIVE ── */
+
+/* ── How It Works: vertical deck at ≤1200px ── */
+@media (max-width: 1200px) {
+
+  /* Wrapper grows to fit stacked cards */
+  .steps-deck-wrap {
+    height: auto;
+    min-height: 680px;   /* 3 × ~200px card + offsets */
+  }
+
+  .steps-deck {
+    /* Keep relative so absolute children anchor here */
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  /* Cards: full-width of their parent, stacked top-to-bottom */
+  .sdeck-card {
+    width: 100%;
+    height: 210px;
+    left: 0 !important;   /* override the desktop left values */
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.45);  /* shadow on top instead of left */
+  }
+
+  /* Vertical starting positions */
+  .sdeck-card-1 { top: 0;    z-index: 3; }
+  .sdeck-card-2 { top: 180px; z-index: 2; }
+  .sdeck-card-3 { top: 340px; z-index: 1; }
+
+  /* Push siblings DOWN on hover / tap-focus */
+  .sdeck-card-1:hover ~ .sdeck-card-2,
+  .sdeck-card-1:focus ~ .sdeck-card-2 { transform: translateY(80px); }
+  .sdeck-card-1:hover ~ .sdeck-card-3,
+  .sdeck-card-1:focus ~ .sdeck-card-3 { transform: translateY(80px); }
+  .sdeck-card-2:hover ~ .sdeck-card-3,
+  .sdeck-card-2:focus ~ .sdeck-card-3 { transform: translateY(80px); }
+
+  /* Neutralise horizontal desktop transforms on the hovered/focused card itself */
+  .sdeck-card-1:hover, .sdeck-card-1:focus,
+  .sdeck-card-2:hover, .sdeck-card-2:focus,
+  .sdeck-card-3:hover, .sdeck-card-3:focus { transform: none; }
+}
+
+/* ── Tighten up on smaller tablets / large phones ── */
+@media (max-width: 640px) {
+  .steps-deck-wrap { min-height: 620px; }
+
+  .sdeck-card { height: 190px; padding: 24px 24px; }
+
+  .sdeck-card-2 { top: 165px; }
+  .sdeck-card-3 { top: 315px; }
+
+  .sdeck-card-1:hover ~ .sdeck-card-2,
+  .sdeck-card-1:focus ~ .sdeck-card-2 { transform: translateY(65px); }
+  .sdeck-card-1:hover ~ .sdeck-card-3,
+  .sdeck-card-1:focus ~ .sdeck-card-3 { transform: translateY(65px); }
+  .sdeck-card-2:hover ~ .sdeck-card-3,
+  .sdeck-card-2:focus ~ .sdeck-card-3 { transform: translateY(80px); }
+
+  .sdeck-card-1:hover, .sdeck-card-1:focus,
+  .sdeck-card-2:hover, .sdeck-card-2:focus,
+  .sdeck-card-3:hover, .sdeck-card-3:focus { transform: none; }
+
+  .sdeck-desc { font-size: 0.78rem; }
+  .sdeck-name { font-size: 1rem; }
+}
+
+/* ── Small phones ── */
+@media (max-width: 420px) {
+  .steps-deck-wrap { min-height: 580px; }
+
+  .sdeck-card { height: 180px; padding: 20px 20px; }
+
+  .sdeck-card-2 { top: 155px; }
+  .sdeck-card-3 { top: 295px; }
+
+  .sdeck-card-1:hover ~ .sdeck-card-2,
+  .sdeck-card-1:focus ~ .sdeck-card-2 { transform: translateY(55px); }
+  .sdeck-card-1:hover ~ .sdeck-card-3,
+  .sdeck-card-1:focus ~ .sdeck-card-3 { transform: translateY(55px); }
+  .sdeck-card-2:hover ~ .sdeck-card-3,
+  .sdeck-card-2:focus ~ .sdeck-card-3 { transform: translateY(65px); }
+
+  .sdeck-card-1:hover, .sdeck-card-1:focus,
+  .sdeck-card-2:hover, .sdeck-card-2:focus,
+  .sdeck-card-3:hover, .sdeck-card-3:focus { transform: none; }
+
+  .sdeck-emoji { font-size: 1.5rem; margin-bottom: 8px; }
+}
+
+/* ── General small-screen fixes ── */
 @media (max-width: 600px) {
   .nav-inner { padding: 0 20px; }
-  .steps-row { flex-direction: column; gap: 8px; }
-  .step-arrow { transform: rotate(90deg); padding: 0; align-self: center; }
   footer { justify-content: center; text-align: center; }
   .input-row { flex-direction: column; border-radius: 14px; }
   .shorten-btn { border-radius: 0 0 12px 12px; justify-content: center; }
