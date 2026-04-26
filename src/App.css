@@ -7,7 +7,6 @@
   --bg: #070d1a;
   --bg2: #0b1425;
 
-  /* Change 1: Vivid electric tech-blue replacing dark navy */
   --teal: #00e5c0;
   --teal-dim: #00b89a;
   --teal-glow: rgba(0, 229, 192, 0.18);
@@ -19,7 +18,6 @@
   --blue-glow: rgba(26, 127, 255, 0.22);
   --blue-glow-strong: rgba(26, 127, 255, 0.38);
 
-  /* Keep var names the same so all references auto-update */
   --dark-blue: var(--blue);
   --dark-blue-glow: var(--blue-glow);
 
@@ -28,13 +26,11 @@
   --card: rgba(255,255,255,0.03);
   --border: rgba(26, 127, 255, 0.2);
 
-  /* Change 2: Apply new fonts */
   --font-display: 'Exo 2', 'Rajdhani', sans-serif;
   --font-heading: 'Rajdhani', 'Exo 2', sans-serif;
   --font-mono: 'Share Tech Mono', monospace;
 }
 
-/* Change 5: Kill the two vertical border lines from index.css #root */
 #root {
   border-inline: none !important;
 }
@@ -62,7 +58,7 @@ body::before { display: none; }
   min-height: 100vh;
 }
 
-/* ── NAV: Change 3 – full-width bar ── */
+/* ── NAV ── */
 nav {
   width: 100%;
   border-bottom: none;
@@ -83,7 +79,6 @@ nav {
   width: 100%;
 }
 
-/* Logo group – no rounded bubble anymore, just a clean row */
 .logo-wrap {
   display: flex;
   align-items: center;
@@ -100,7 +95,6 @@ nav {
   box-shadow: none;
 }
 
-/* Change 4: blue-circle around lightning icon */
 .logo-icon {
   width: 40px;
   height: 40px;
@@ -226,7 +220,6 @@ h1 {
 }
 .url-input::placeholder { color: var(--muted); }
 
-/* Change 6: Lightning icon inside the shorten button */
 .shorten-btn {
   display: flex;
   align-items: center;
@@ -258,6 +251,33 @@ h1 {
   height: 16px;
   object-fit: contain;
   filter: brightness(2) drop-shadow(0 0 3px rgba(255,255,255,0.6));
+}
+
+/* Loading spinner shown inside button while awaiting API response */
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Error message shown below the input row */
+.api-error {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #ff6b8a;
+  background: rgba(255, 75, 110, 0.08);
+  border: 1px solid rgba(255, 75, 110, 0.25);
+  border-radius: 8px;
+  padding: 10px 16px;
+  max-width: 680px;
+  width: 100%;
+  text-align: left;
 }
 
 /* ── RESULT CARD ── */
@@ -295,7 +315,9 @@ h1 {
   font-weight: 700;
   color: #fff;
   word-break: break-all;
+  text-decoration: none;
 }
+.result-link:hover { text-decoration: underline; }
 .copy-btn {
   padding: 10px 20px;
   background: transparent;
@@ -404,17 +426,14 @@ h1 {
   padding-bottom: 120px;
 }
 
-/* Outer wrapper: provides vertical space for the absolute cards */
 .steps-deck-wrap {
   position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
-  /* height must accommodate the tallest card + any slide offset */
   height: 320px;
 }
 
-/* Inner container: serves as the absolute positioning root */
 .steps-deck {
   position: relative;
   width: 100%;
@@ -422,7 +441,6 @@ h1 {
   height: 100%;
 }
 
-/* ── Shared card base ── */
 .sdeck-card {
   position: absolute;
   height: 270px;
@@ -432,7 +450,6 @@ h1 {
   background: rgba(255,255,255,0.03);
   border: 1px solid var(--border);
   backdrop-filter: blur(6px);
-  /* left-side shadow for depth layering feel */
   box-shadow: -10px 0 20px rgba(0,0,0,0.45), 0 0 0 0 var(--blue-glow);
   transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1),
               box-shadow 0.4s ease,
@@ -440,10 +457,8 @@ h1 {
   overflow: hidden;
 }
 
-/* No browser focus ring — we style it ourselves */
 .sdeck-card:focus { outline: none; }
 
-/* Glowing top-edge accent line */
 .sdeck-card::before {
   content: '';
   position: absolute;
@@ -456,18 +471,16 @@ h1 {
 .sdeck-card:hover::before,
 .sdeck-card:focus::before { opacity: 1; }
 
-/* ── Individual card positions ── */
 .sdeck-card-1 { left: 60px;  z-index: 3; }
 .sdeck-card-2 { left: 300px; z-index: 2; }
 .sdeck-card-3 { left: 530px; z-index: 1; }
 
-/* ── Sibling push animations ── */
 .sdeck-card-1:hover,
 .sdeck-card-1:focus {
   border-color: var(--blue);
   box-shadow: -10px 0 20px rgba(0,0,0,0.45), 0 0 30px var(--blue-glow);
 }
-.sdeck-card-1:hover ~ .sdeck-card-2, 
+.sdeck-card-1:hover ~ .sdeck-card-2,
 .sdeck-card-1:focus ~ .sdeck-card-2 { transform: translateX(225px); }
 .sdeck-card-1:hover ~ .sdeck-card-3,
 .sdeck-card-1:focus ~ .sdeck-card-3 { transform: translateX(200px); }
@@ -486,7 +499,6 @@ h1 {
   box-shadow: -10px 0 20px rgba(0,0,0,0.45), 0 0 30px var(--blue-glow);
 }
 
-/* ── Card inner content ── */
 .sdeck-step-num {
   font-family: var(--font-mono);
   font-size: 3.2rem;
@@ -566,17 +578,13 @@ footer {
 
 /* ── RESPONSIVE ── */
 
-/* ── How It Works: vertical deck at ≤1200px ── */
 @media (max-width: 1200px) {
-
-  /* Wrapper grows to fit stacked cards */
   .steps-deck-wrap {
     height: auto;
-    min-height: 680px;   /* 3 × ~200px card + offsets */
+    min-height: 680px;
   }
 
   .steps-deck {
-    /* Keep relative so absolute children anchor here */
     position: relative;
     width: 100%;
     max-width: 560px;
@@ -584,20 +592,17 @@ footer {
     margin: 0 auto;
   }
 
-  /* Cards: full-width of their parent, stacked top-to-bottom */
   .sdeck-card {
     width: 100%;
     height: 210px;
-    left: 0 !important;   /* override the desktop left values */
-    box-shadow: 0 -10px 20px rgba(0,0,0,0.45);  /* shadow on top instead of left */
+    left: 0 !important;
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.45);
   }
 
-  /* Vertical starting positions */
-  .sdeck-card-1 { top: 0;    z-index: 3; }
+  .sdeck-card-1 { top: 0;     z-index: 3; }
   .sdeck-card-2 { top: 180px; z-index: 2; }
   .sdeck-card-3 { top: 340px; z-index: 1; }
 
-  /* Push siblings DOWN on hover / tap-focus */
   .sdeck-card-1:hover ~ .sdeck-card-2,
   .sdeck-card-1:focus ~ .sdeck-card-2 { transform: translateY(80px); }
   .sdeck-card-1:hover ~ .sdeck-card-3,
@@ -605,13 +610,11 @@ footer {
   .sdeck-card-2:hover ~ .sdeck-card-3,
   .sdeck-card-2:focus ~ .sdeck-card-3 { transform: translateY(80px); }
 
-  /* Neutralise horizontal desktop transforms on the hovered/focused card itself */
   .sdeck-card-1:hover, .sdeck-card-1:focus,
   .sdeck-card-2:hover, .sdeck-card-2:focus,
   .sdeck-card-3:hover, .sdeck-card-3:focus { transform: none; }
 }
 
-/* ── Tighten up on smaller tablets / large phones ── */
 @media (max-width: 640px) {
   .steps-deck-wrap { min-height: 620px; }
 
@@ -635,7 +638,6 @@ footer {
   .sdeck-name { font-size: 1rem; }
 }
 
-/* ── Small phones ── */
 @media (max-width: 420px) {
   .steps-deck-wrap { min-height: 580px; }
 
@@ -658,7 +660,6 @@ footer {
   .sdeck-emoji { font-size: 1.5rem; margin-bottom: 8px; }
 }
 
-/* ── General small-screen fixes ── */
 @media (max-width: 600px) {
   .nav-inner { padding: 0 20px; }
   footer { justify-content: center; text-align: center; }

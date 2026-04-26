@@ -1,7 +1,96 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import './App.css';
 
+// ── Backend API ─────────────────────────────────────────────────────────────
+const API_BASE = "https://url-shortner-dbau.onrender.com";
+
+async function shortenUrl(longUrl) {
+  const res = await fetch(`${API_BASE}/api/shorten/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url: longUrl }),
+  });
+  // Get response text first to see what the server actually returns
+  const text = await res.text();
+  console.log("Server response:", res.status, text);
+  
+  if (!res.ok) {
+    let err = {};
+    try { err = JSON.parse(text); } catch {}
+    throw new Error(err?.detail || err?.url?.[0] || `Server error ${res.status}`);
+  }
+  return JSON.parse(text);
+  // Expected response: { id, url, short_code, short_url, created_at }
+}
+// ───────────────────────────────────────────────────────────────────────────
+
 export default function AnikronosApp() {
+  const [inputVal, setInputVal] = useState("");
+  const [result,   setResult]   = useState(null);  // { shortUrl }
+  const [loading,  setLoading]  = useState(false);
+  const [error,    setError]    = useState("");
+  const [shake,    setShake]    = useState(false);
+  const [copied,   setCopied]   = useState(false);
+  const inputRef = useRef(null);
+
+  function triggerShake() {
+    setShake(true);
+    setTimeout(() => setShake(false), 450);
+  }
+
+  async function handleShorten() {
+    const val = inputVal.trim();
+
+    if (!val) {
+      triggerShake();
+      inputRef.current?.focus();
+      return;
+    }
+
+    // Basic client-side validation before hitting the network
+    try { new URL(val); } catch {
+      setError("Please enter a valid URL — make sure it starts with https://");
+      triggerShake();
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setResult(null);
+
+    try {
+      const data = await shortenUrl(val);
+      const shortUrl = data.short_url || `${API_BASE}/${data.short_code}/`;
+      setResult({ shortUrl });
+    } catch (e) {
+      setError(e.message || "Something went wrong. Please try again.");
+      triggerShake();
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === "Enter") handleShorten();
+  }
+
+  async function handleCopy() {
+    if (!result) return;
+    try {
+      await navigator.clipboard.writeText(result.shortUrl);
+    } catch {
+      // Fallback for older mobile browsers
+      const ta = document.createElement("textarea");
+      ta.value = result.shortUrl;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2200);
+  }
+
   return (
     <>
       <div className="orb orb-1" />
@@ -12,7 +101,6 @@ export default function AnikronosApp() {
         <nav>
           <div className="nav-inner">
             <div className="logo-wrap">
-              {/* Change 4: lightning-icon.png in a blue-hued circle */}
               <div className="logo-icon">
                 <img src="./images/lightning-icon.png" alt="Lightning" className="logo-lightning-img" />
               </div>
@@ -31,18 +119,58 @@ export default function AnikronosApp() {
             Manage, track analytics, and optimize every link effortlessly.
           </p>
 
-          <div className="input-row">
+          <div className={`input-row${shake ? " shake" : ""}`}>
             <input
+              ref={inputRef}
               className="url-input"
               type="url"
               placeholder="Paste your long, complex URL here..."
+              value={inputVal}
+              onChange={e => { setInputVal(e.target.value); setError(""); }}
+              onKeyDown={handleKeyDown}
+              disabled={loading}
             />
-            {/* Change 6: lightning icon inside the shorten button (no circle) */}
-            <button className="shorten-btn">
-              <img src="./images/lightning-icon.png" alt="" className="btn-lightning-img" />
-              Shorten URL
+            <button
+              className="shorten-btn"
+              onClick={handleShorten}
+              disabled={loading}
+            >
+              {loading
+                ? <span className="btn-spinner" aria-hidden="true" />
+                : <img src="./images/lightning-icon.png" alt="" className="btn-lightning-img" />
+              }
+              {loading ? "Shortening…" : "Shorten URL"}
             </button>
           </div>
+
+          {/* Error message */}
+          {error && <p className="api-error" role="alert">{error}</p>}
+
+          {/* Result card */}
+          {result && (
+            <div className="result-wrap">
+              <div className="result-card">
+                <div>
+                  <div className="result-label">Your shortened link</div>
+                  <a
+                    className="result-link"
+                    href={result.shortUrl}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    {result.shortUrl}
+                  </a>
+                </div>
+                <button
+                  className={`copy-btn${copied ? " copied" : ""}`}
+                  onClick={handleCopy}
+                  aria-label="Copy shortened URL"
+                >
+                  {copied ? "✓ Copied!" : "Copy"}
+                </button>
+              </div>
+            </div>
+          )}
         </section>
 
         <section className="section">
