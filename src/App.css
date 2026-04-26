@@ -613,6 +613,47 @@ footer {
   .sdeck-card-1:hover, .sdeck-card-1:focus,
   .sdeck-card-2:hover, .sdeck-card-2:focus,
   .sdeck-card-3:hover, .sdeck-card-3:focus { transform: none; }
+
+  /* Action buttons - only show in vertical layout */
+  .sdeck-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--blue);
+    background: rgba(26, 127, 255, 0.1);
+    border: 1px solid var(--blue);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .sdeck-action:hover {
+    background: var(--blue-glow);
+    transform: translateY(-2px);
+  }
+
+  /* Position retract buttons at top-left */
+  .sdeck-card-2 .sdeck-action.retract,
+  .sdeck-card-3 .sdeck-action.retract {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    margin: 0;
+  }
+
+  /* Position extend buttons at bottom */
+  .sdeck-card-1 .sdeck-action.extend,
+  .sdeck-card-2 .sdeck-action.extend {
+    margin-top: 12px;
+  }
+}
+
+/* Hide action buttons in desktop layout */
+@media (min-width: 1201px) {
+  .sdeck-action { display: none !important; }
 }
 
 @media (max-width: 640px) {

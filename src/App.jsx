@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import './App.css';
 
 // ── Backend API ─────────────────────────────────────────────────────────────
-const API_BASE = "https://url-shortner-dbau.onrender.com";
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 async function shortenUrl(longUrl) {
   const res = await fetch(`${API_BASE}/api/shorten/`, {
@@ -201,14 +201,18 @@ export default function AnikronosApp() {
                 <div className="sdeck-emoji">📋</div>
                 <div className="sdeck-name">Paste Link</div>
                 <div className="sdeck-desc">Copy any long URL and paste it into our secure input field. Works with any link — social, ecommerce, docs, you name it.</div>
+                <button className="sdeck-action extend" aria-label="Extend">extend ↓</button>
               </div>
               <div className="sdeck-card sdeck-card-2" tabIndex={0} role="button" aria-label="Step 2: Shorten">
+                <button className="sdeck-action retract" aria-label="Retract">retract ↑</button>
                 <div className="sdeck-step-num">02</div>
                 <div className="sdeck-emoji">⚙️</div>
                 <div className="sdeck-name">Shorten</div>
                 <div className="sdeck-desc">Our algorithm instantly generates a concise, memorable alias for your link. Optionally set a custom keyword to make it truly yours.</div>
+                <button className="sdeck-action extend" aria-label="Extend">extend ↓</button>
               </div>
               <div className="sdeck-card sdeck-card-3" tabIndex={0} role="button" aria-label="Step 3: Share and Track">
+                <button className="sdeck-action retract" aria-label="Retract">retract ↑</button>
                 <div className="sdeck-step-num">03</div>
                 <div className="sdeck-emoji">🚀</div>
                 <div className="sdeck-name">Share &amp; Track</div>
