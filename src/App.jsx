@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import './App.css';
 
 // ── Backend API ─────────────────────────────────────────────────────────────
@@ -32,6 +32,27 @@ export default function AnikronosApp() {
   const [shake,    setShake]    = useState(false);
   const [copied,   setCopied]   = useState(false);
   const inputRef = useRef(null);
+  const featuresRef = useRef(null);
+  const howItWorksRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    if (featuresRef.current) {
+      observer.observe(featuresRef.current);
+    }
+    if (howItWorksRef.current) {
+      observer.observe(howItWorksRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   function triggerShake() {
     setShake(true);
@@ -175,7 +196,7 @@ export default function AnikronosApp() {
 
         <section className="section">
           <h2 className="section-title">Why Choose Anikronos?</h2>
-          <div className="features-grid">
+          <div className="features-grid" ref={featuresRef}>
             {[
               { icon: "⚡", name: "Instant Shortening", desc: "Create compact links in milliseconds with zero friction." },
               { icon: "📊", name: "Detailed Analytics", desc: "Track clicks, sources, devices, and geographic data." },
@@ -195,24 +216,20 @@ export default function AnikronosApp() {
         <section className="how-section">
           <h2 className="section-title">How It Works</h2>
           <div className="steps-deck-wrap">
-            <div className="steps-deck">
+            <div className="steps-deck" ref={howItWorksRef}>
               <div className="sdeck-card sdeck-card-1" tabIndex={0} role="button" aria-label="Step 1: Paste Link">
                 <div className="sdeck-step-num">01</div>
                 <div className="sdeck-emoji">📋</div>
                 <div className="sdeck-name">Paste Link</div>
                 <div className="sdeck-desc">Copy any long URL and paste it into our secure input field. Works with any link — social, ecommerce, docs, you name it.</div>
-                <button className="sdeck-action extend" aria-label="Extend">extend ↓</button>
               </div>
               <div className="sdeck-card sdeck-card-2" tabIndex={0} role="button" aria-label="Step 2: Shorten">
-                <button className="sdeck-action retract" aria-label="Retract">retract ↑</button>
                 <div className="sdeck-step-num">02</div>
                 <div className="sdeck-emoji">⚙️</div>
                 <div className="sdeck-name">Shorten</div>
                 <div className="sdeck-desc">Our algorithm instantly generates a concise, memorable alias for your link. Optionally set a custom keyword to make it truly yours.</div>
-                <button className="sdeck-action extend" aria-label="Extend">extend ↓</button>
               </div>
               <div className="sdeck-card sdeck-card-3" tabIndex={0} role="button" aria-label="Step 3: Share and Track">
-                <button className="sdeck-action retract" aria-label="Retract">retract ↑</button>
                 <div className="sdeck-step-num">03</div>
                 <div className="sdeck-emoji">🚀</div>
                 <div className="sdeck-name">Share &amp; Track</div>
