@@ -38,10 +38,6 @@
 html, body, #root {
   min-height: 100vh;
   background: var(--bg);
-  background-image: url('/images/lightning-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   color: var(--text);
   font-family: var(--font-display);
   overflow-x: hidden;
@@ -52,7 +48,7 @@ body::before { display: none; }
 
 .page {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
