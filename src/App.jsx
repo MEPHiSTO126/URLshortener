@@ -36,8 +36,30 @@ export default function AnikronosApp() {
   const inputRef = useRef(null);
   const featuresRef = useRef(null);
   const howItWorksRef = useRef(null);
+  const [introStage, setIntroStage] = useState('show'); // 'show' | 'fading' | 'done'
+  const introDone = introStage === 'done';
 
   useEffect(() => {
+    if (
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ||
+      sessionStorage.getItem('anikronos-intro-seen')
+    ) {
+      setIntroStage('done');
+      return;
+    }
+    const fadeTimer = setTimeout(() => setIntroStage('fading'), 2000);
+    const doneTimer = setTimeout(() => {
+      sessionStorage.setItem('anikronos-intro-seen', '1');
+      setIntroStage('done');
+    }, 2500);
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(doneTimer);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!introDone) return;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -54,7 +76,7 @@ export default function AnikronosApp() {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [introDone]);
 
   function triggerShake() {
     setShake(true);
@@ -130,14 +152,19 @@ export default function AnikronosApp() {
         starSpeed={0.5}
         speed={1}
       />
-      <Lightning
-        hue={220}
-        xOffset={0}
-        speed={1}
-        intensity={1}
-        size={1}
-      />
+      {!introDone && (
+        <div className={`intro-overlay${introStage === 'fading' ? ' fading' : ''}`} aria-hidden="true">
+          <Lightning
+            hue={220}
+            xOffset={0}
+            speed={1}
+            intensity={1}
+            size={1}
+          />
+        </div>
+      )}
 
+      {introDone && (
       <div className="page">
         {/* ── FULL-WIDTH NAV ── */}
         <nav>
@@ -282,6 +309,7 @@ export default function AnikronosApp() {
           <div className="footer-copy">© 2026 Anikronos Ltd. All rights reserved.</div>
         </footer>
       </div>
+      )}
     </>
   );
 }
