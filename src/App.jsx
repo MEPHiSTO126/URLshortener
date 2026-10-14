@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+﻿import React, { useState, useRef, useEffect } from "react";
 import Galaxy from './Galaxy';
 import Lightning from './Lightning';
+import { IconZap, IconChart, IconTag, IconFolder, IconClipboard, IconScissors, IconRocket, IconCheck } from './icons';
 import './App.css';
 
 // ── Backend API ─────────────────────────────────────────────────────────────
@@ -235,7 +236,7 @@ export default function AnikronosApp() {
                   onClick={handleCopy}
                   aria-label="Copy shortened URL"
                 >
-                  {copied ? "✓ Copied!" : "Copy"}
+                  {copied ? (<><IconCheck /> Copied!</>) : "Copy"}
                 </button>
               </div>
             </div>
@@ -246,13 +247,13 @@ export default function AnikronosApp() {
           <h2 className="section-title">Why Choose Anikronos?</h2>
           <div className="features-grid" ref={featuresRef}>
             {[
-              { icon: "⚡", name: "Instant Shortening", desc: "Create compact links in milliseconds with zero friction." },
-              { icon: "📊", name: "Detailed Analytics", desc: "Track clicks, sources, devices, and geographic data." },
-              { icon: "🏷️", name: "Custom Aliases", desc: "Brand your links with memorable keywords like chrns.co/sale." },
-              { icon: "📁", name: "Link Management", desc: "Organize and manage all your links in one central dashboard." },
+              { icon: IconZap, name: "Instant Shortening", desc: "Create compact links in milliseconds with zero friction." },
+              { icon: IconChart, name: "Detailed Analytics", desc: "Track clicks, sources, devices, and geographic data." },
+              { icon: IconTag, name: "Custom Aliases", desc: "Brand your links with memorable keywords like chrns.co/sale." },
+              { icon: IconFolder, name: "Link Management", desc: "Organize and manage all your links in one central dashboard." },
             ].map(f => (
               <div className="feature-card" key={f.name}>
-                <div className="feature-icon">{f.icon}</div>
+                <div className="feature-icon"><f.icon /></div>
                 <div className="feature-name">{f.name}</div>
                 <div className="feature-desc">{f.desc}</div>
               </div>
@@ -267,19 +268,19 @@ export default function AnikronosApp() {
             <div className="steps-deck" ref={howItWorksRef}>
               <div className="sdeck-card sdeck-card-1" tabIndex={0} role="button" aria-label="Step 1: Paste Link">
                 <div className="sdeck-step-num">01</div>
-                <div className="sdeck-emoji">📋</div>
+                <div className="sdeck-icon"><IconClipboard /></div>
                 <div className="sdeck-name">Paste Link</div>
                 <div className="sdeck-desc">Copy any long URL and paste it into our secure input field. Works with any link — social, ecommerce, docs, you name it.</div>
               </div>
               <div className="sdeck-card sdeck-card-2" tabIndex={0} role="button" aria-label="Step 2: Shorten">
                 <div className="sdeck-step-num">02</div>
-                <div className="sdeck-emoji">⚙️</div>
+                <div className="sdeck-icon"><IconScissors /></div>
                 <div className="sdeck-name">Shorten</div>
                 <div className="sdeck-desc">Our algorithm instantly generates a concise, memorable alias for your link. Optionally set a custom keyword to make it truly yours.</div>
               </div>
               <div className="sdeck-card sdeck-card-3" tabIndex={0} role="button" aria-label="Step 3: Share and Track">
                 <div className="sdeck-step-num">03</div>
-                <div className="sdeck-emoji">🚀</div>
+                <div className="sdeck-icon"><IconRocket /></div>
                 <div className="sdeck-name">Share &amp; Track</div>
                 <div className="sdeck-desc">Distribute your shortened link anywhere and monitor real-time analytics — clicks, devices, locations, and referral sources.</div>
               </div>
